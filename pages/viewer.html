@@ -1,98 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AloeFlex — 3D Product Viewer</title>
-    <link rel="stylesheet" href="../css/viewer.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AloeFlex - 3D Product Viewer</title>
+    <link rel="stylesheet" href="../css/viewer.css">
 </head>
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar">
     <div class="navbar-inner">
-        <a href="../index.html" class="nav-logo">
-            <span class="nav-logo-text">Aloe<span>Flex</span></span>
-        </a>
+        <a href="../index.html" class="nav-logo"><span class="nav-logo-text">Aloe<span>Flex</span></span></a>
         <ul class="nav-links">
-            <li><a href="../index.html#features">Features</a></li>
-            <li><a href="../index.html#products">Shop</a></li>
-            <li><a href="../index.html#technology">AloeTrack</a></li>
+            <li><a href="features.html">Features</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="aloetrack.html">AloeTrack</a></li>
             <li><a href="viewer.html" class="active">3D View</a></li>
-            <li><a href="../index.html#about">About</a></li>
+            <li><a href="about.html">About</a></li>
         </ul>
-        <a href="../index.html#products" class="nav-cta">Shop Now</a>
+        <a href="shop.html" class="nav-cta">Shop Now</a>
     </div>
 </nav>
 
-<!-- HERO -->
 <div class="viewer-hero">
     <div class="viewer-label">Interactive 3D Model</div>
     <h1>AloeFlex <em>Knee Brace</em></h1>
-    <p class="viewer-subtitle">Drag to rotate · Scroll to zoom · Explore every layer of protection</p>
+    <p class="viewer-subtitle">Drag to rotate -- Scroll to zoom -- Explore every layer of protection</p>
 
-    <!-- Canvas -->
+    <!-- Replace your entire viewer-canvas-wrap div with this -->
     <div class="viewer-canvas-wrap">
-        <div class="placeholder-badge">🔬 3D Placeholder</div>
-        <canvas id="three-canvas"></canvas>
-        <div class="canvas-ring"></div>
+        <iframe title="A black knee brace 3D model - Sketchfab" class="c-viewer__iframe" src="https://sketchfab.com/models/f9ebdddadd404d56bcc23837091fe699/embed?autostart=1&amp;internal=1&amp;tracking=0&amp;ui_ar=0&amp;ui_infos=0&amp;ui_snapshots=1&amp;ui_stop=0&amp;ui_theatre=1&amp;ui_watermark=0" id="api-frame" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking="true" execution-while-out-of-viewport="true" execution-while-not-rendered="true" web-share="true" allowfullscreen=""></iframe>
+        <div class="viewer-mask"></div>
         <div class="canvas-corner tl"></div>
         <div class="canvas-corner tr"></div>
         <div class="canvas-corner bl"></div>
         <div class="canvas-corner br"></div>
-        <div class="canvas-loading" id="canvas-loading">
-            <div class="loader-ring"></div>
-            <p>Loading 3D model...</p>
-        </div>
     </div>
-    <p class="canvas-hint">🖱️ Drag to rotate &nbsp;·&nbsp; 🖱️ Scroll to zoom &nbsp;·&nbsp; Double-click to reset</p>
 
-    <!-- Controls -->
-    <div class="viewer-controls">
-        <button class="ctrl-btn active" id="btn-autorotate">⏸ Pause Rotation</button>
-        <div class="ctrl-divider"></div>
-        <button class="ctrl-btn" id="btn-explode">💥 Explode View</button>
-        <div class="ctrl-divider"></div>
-        <button class="ctrl-btn" id="btn-reset">↩ Reset View</button>
-    </div>
+    <!-- Also remove or comment out the viewer controls div and canvas hint since Sketchfab has its own controls -->
+    <!-- <p class="canvas-hint">...</p> -->
+    <!-- <div class="viewer-controls">...</div> -->
+    <p class="canvas-hint">Drag to rotate | Scroll to zoom | Double-click to reset</p>
+
+    <
 </div>
 
-<!-- SPECS -->
 <div class="specs-section">
     <h2>Technical Specifications</h2>
     <div class="specs-grid">
         <div class="spec-card">
-            <div class="spec-icon">🛡️</div>
+            <div class="spec-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
             <h4>Shell Material</h4>
             <h3>Low Density Polyethylene</h3>
             <p>LDPE provides 7,830 PSI tensile strength — far exceeding any force an athlete would experience in play. Flexible yet highly resistant to blunt impact.</p>
         </div>
         <div class="spec-card">
-            <div class="spec-icon">🌿</div>
+            <div class="spec-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93z"/></svg></div>
             <h4>Interior Fabric</h4>
             <h3>Aloe Vera Microencapsulation</h3>
-            <p>Aloe vera capsules release continuously during wear. Anti-inflammatory, antibacterial, anti-allergenic, and naturally temperature regulating — no ice packs needed.</p>
+            <p>Aloe vera capsules release continuously during wear. Anti-inflammatory, antibacterial, anti-allergenic, and naturally temperature regulating.</p>
         </div>
         <div class="spec-card">
-            <div class="spec-icon">🤸</div>
+            <div class="spec-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
             <h4>Core Material</h4>
             <h3>Neoprene + Memory Foam</h3>
             <p>Medical-grade neoprene and memory foam contour precisely to the knee joint. Elastic cotton outer layer adds breathability and four-way stretch.</p>
         </div>
         <div class="spec-card">
-            <div class="spec-icon">🔊</div>
+            <div class="spec-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
             <h4>Sensors</h4>
             <h3>Contact Microphones</h3>
             <p>Embedded contact microphones detect micro-vibrations on the skin surface, enabling real-time joint health assessment and arthritis severity classification.</p>
         </div>
         <div class="spec-card">
-            <div class="spec-icon">⚡</div>
+            <div class="spec-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
             <h4>Sensors</h4>
             <h3>EBI Sensors</h3>
             <p>Electrical Bioimpedance sensors quantitatively measure joint swelling and inflammation. Clinical-grade accuracy in a noninvasive wearable form factor.</p>
         </div>
         <div class="spec-card">
-            <div class="spec-icon">🔧</div>
+            <div class="spec-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
             <h4>Fit System</h4>
             <h3>Dual Stability Straps</h3>
             <p>Dual adjustable straps provide loosening and tightening control across the full range of joint sizes. One brace that truly fits everyone.</p>
@@ -100,19 +87,14 @@
     </div>
 </div>
 
-<!-- CTA -->
 <div class="viewer-cta">
     <h2 style="font-family:'Syne',sans-serif;color:white;margin-bottom:0.75rem;font-size:2rem;">Ready to protect your joints?</h2>
     <p>The AloeFlex Knee Brace ships with the AloeTrack app — free, forever.</p>
-    <a href="../index.html#products" class="btn-cyan">🛒 Shop AloeFlex — From $34.99</a>
+    <a href="shop.html" class="btn-cyan">Shop AloeFlex — From $34.99</a>
 </div>
 
-<!-- MINI FOOTER -->
-<div class="mini-footer">
-    © 2026 AloeFlex · <a href="../index.html" style="color:rgba(255,255,255,0.4)">Back to Store</a>
-</div>
+<div class="mini-footer">2026 AloeFlex | <a href="../index.html" style="color:rgba(255,255,255,0.4)">Back to Store</a></div>
 
-<!-- Three.js from CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="../js/viewer.js"></script>
 </body>

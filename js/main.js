@@ -1,34 +1,36 @@
 // ===== ALOEFLEX MAIN JS =====
 
-// === State ===
 let cart = JSON.parse(localStorage.getItem('aloeflex_cart') || '[]');
 
-// === Products Data ===
 const products = [
-    { id: 1, name: 'AloeFlex Knee Brace', emoji: '🦵', price: 59.99, category: 'knee', badge: 'Bestseller', rating: 4.9, reviews: 284, desc: 'Maximum knee protection' },
-    { id: 2, name: 'AloeFlex Ankle Brace', emoji: '🦶', price: 44.99, category: 'ankle', badge: 'New', rating: 4.8, reviews: 156, desc: 'Lightweight ankle support' },
-    { id: 3, name: 'AloeFlex Wrist Brace', emoji: '🤝', price: 34.99, category: 'wrist', badge: '', rating: 4.7, reviews: 98, desc: 'Flexible wrist protection' },
-    { id: 4, name: 'AloeFlex Elbow Brace', emoji: '💪', price: 44.99, category: 'elbow', badge: '', rating: 4.8, reviews: 112, desc: 'Durable elbow support' },
+    { id: 1, name: 'AloeFlex Knee Brace', img: 'images/knee.png', price: 59.99, category: 'knee', badge: 'Bestseller', rating: 4.9, reviews: 284, desc: 'Maximum knee protection' },
+    { id: 2, name: 'AloeFlex Ankle Brace', img: 'images/ankle.png', price: 44.99, category: 'ankle', badge: 'New', rating: 4.8, reviews: 156, desc: 'Lightweight ankle support' },
+    { id: 3, name: 'AloeFlex Wrist Brace', img: 'images/wrist.png', price: 34.99, category: 'wrist', badge: '', rating: 4.7, reviews: 98, desc: 'Flexible wrist protection' },
+    { id: 4, name: 'AloeFlex Elbow Brace', img: 'images/elbow.png', price: 44.99, category: 'elbow', badge: '', rating: 4.8, reviews: 112, desc: 'Durable elbow support' },
 ];
 
-// === DOM Helpers ===
+// Resolve image path based on current page depth
+function imgPath(src) {
+    if (window.location.pathname.includes('/pages/')) return '../' + src;
+    return src;
+}
+
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-// === Navbar Scroll Effect ===
+// Cart icon SVG
+const cartSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>';
+
 function initNavbar() {
     const navbar = $('.navbar');
     if (!navbar) return;
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 60) navbar.classList.add('scrolled');
-        else navbar.classList.remove('scrolled');
+        if (window.scrollY > 60) navbar.style.padding = '0.75rem 0';
+        else navbar.style.padding = '1rem 0';
     });
 }
 
-// === Cart ===
-function saveCart() {
-    localStorage.setItem('aloeflex_cart', JSON.stringify(cart));
-}
+function saveCart() { localStorage.setItem('aloeflex_cart', JSON.stringify(cart)); }
 
 function updateCartCount() {
     const count = cart.reduce((acc, item) => acc + item.qty, 0);
@@ -44,17 +46,13 @@ function addToCart(id) {
     const existing = cart.find(c => c.id === id);
     if (existing) existing.qty++;
     else cart.push({ ...product, qty: 1 });
-    saveCart();
-    updateCartCount();
-    renderCartItems();
-    showNotification(`🛒 ${product.name} added to cart!`);
+    saveCart(); updateCartCount(); renderCartItems();
+    showNotification(product.name + ' added to cart');
 }
 
 function removeFromCart(id) {
     cart = cart.filter(c => c.id !== id);
-    saveCart();
-    updateCartCount();
-    renderCartItems();
+    saveCart(); updateCartCount(); renderCartItems();
 }
 
 function changeQty(id, delta) {
@@ -62,146 +60,106 @@ function changeQty(id, delta) {
     if (!item) return;
     item.qty += delta;
     if (item.qty <= 0) removeFromCart(id);
-    else {
-        saveCart();
-        updateCartCount();
-        renderCartItems();
-    }
+    else { saveCart(); updateCartCount(); renderCartItems(); }
 }
 
 function renderCartItems() {
     const container = $('.cart-items');
     if (!container) return;
-
     if (cart.length === 0) {
-        container.innerHTML = `
-      <div class="cart-empty">
-        <div class="cart-empty-icon">🛒</div>
-        <p>Your cart is empty</p>
-        <p style="font-size:0.85rem;margin-top:0.5rem">Add some products to get started!</p>
-      </div>`;
-        updateCartTotal();
-        return;
+        container.innerHTML = '<div class="cart-empty"><p style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem">Your cart is empty</p><p style="font-size:0.85rem">Add some products to get started</p></div>';
+        updateCartTotal(); return;
     }
-
     container.innerHTML = cart.map(item => `
     <div class="cart-item" data-id="${item.id}">
-      <div class="cart-item-img">${item.emoji}</div>
+      <div class="cart-item-img"><img src="${imgPath(item.img)}" alt="${item.name}"></div>
       <div class="cart-item-info">
         <div class="cart-item-name">${item.name}</div>
         <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</div>
         <div class="cart-item-qty">
-          <div class="qty-btn" onclick="changeQty(${item.id}, -1)">−</div>
+          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
           <span class="qty-num">${item.qty}</span>
-          <div class="qty-btn" onclick="changeQty(${item.id}, 1)">+</div>
+          <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
         </div>
       </div>
-      <span class="cart-item-remove" onclick="removeFromCart(${item.id})">✕</span>
-    </div>
-  `).join('');
+      <button class="cart-item-remove" onclick="removeFromCart(${item.id})">X</button>
+    </div>`).join('');
     updateCartTotal();
 }
 
 function updateCartTotal() {
     const total = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
     const el = $('.cart-total-amount');
-    if (el) el.textContent = `$${total.toFixed(2)}`;
+    if (el) el.textContent = '$' + total.toFixed(2);
 }
 
 function openCart() {
-    $('.cart-overlay').classList.add('open');
-    $('.cart-sidebar').classList.add('open');
+    const o = $('.cart-overlay'); const s = $('.cart-sidebar');
+    if (o) o.classList.add('open');
+    if (s) s.classList.add('open');
     document.body.style.overflow = 'hidden';
 }
 
 function closeCart() {
-    $('.cart-overlay').classList.remove('open');
-    $('.cart-sidebar').classList.remove('open');
+    const o = $('.cart-overlay'); const s = $('.cart-sidebar');
+    if (o) o.classList.remove('open');
+    if (s) s.classList.remove('open');
     document.body.style.overflow = '';
 }
 
 function initCart() {
-    renderCartItems();
-    updateCartCount();
-
+    renderCartItems(); updateCartCount();
     $$('.cart-btn').forEach(btn => btn.addEventListener('click', openCart));
     const overlay = $('.cart-overlay');
     const closeBtn = $('.cart-close');
     if (overlay) overlay.addEventListener('click', closeCart);
     if (closeBtn) closeBtn.addEventListener('click', closeCart);
-
     const checkoutBtn = $('.checkout-btn');
-    if (checkoutBtn) {
-        checkoutBtn.addEventListener('click', () => {
-            if (cart.length === 0) {
-                showNotification('⚠️ Your cart is empty!');
-                return;
-            }
-            showNotification('🎉 Checkout coming soon! Thank you for your interest.');
-        });
-    }
+    if (checkoutBtn) checkoutBtn.addEventListener('click', () => {
+        if (cart.length === 0) { showNotification('Your cart is empty'); return; }
+        showNotification('Checkout coming soon! Thank you.');
+    });
 }
 
-// === Notification ===
 function showNotification(msg) {
     let notif = $('.notification');
     if (!notif) {
         notif = document.createElement('div');
         notif.className = 'notification';
-        notif.innerHTML = `<span class="notification-icon"></span><span class="notification-msg"></span>`;
         document.body.appendChild(notif);
     }
-    const parts = msg.match(/^(\S+\s?)(.+)$/);
-    if (parts) {
-        notif.querySelector('.notification-icon').textContent = parts[1];
-        notif.querySelector('.notification-msg').textContent = parts[2];
-    } else {
-        notif.querySelector('.notification-msg').textContent = msg;
-    }
+    notif.textContent = msg;
     notif.classList.add('show');
     setTimeout(() => notif.classList.remove('show'), 3500);
 }
 
-// === Products Render ===
 function renderProducts(filter = 'all') {
     const grid = $('.products-grid');
     if (!grid) return;
-
     const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
-
     grid.innerHTML = filtered.map(p => `
     <div class="product-card" data-aos>
       <div class="product-img">
         <div class="product-img-bg"></div>
-        ${p.badge ? `<span class="product-badge-new">${p.badge}</span>` : ''}
-        <div class="product-wishlist" onclick="toggleWishlist(this)">🤍</div>
-        <div class="product-emoji">${p.emoji}</div>
+        ${p.badge ? '<span class="product-badge-new">' + p.badge + '</span>' : ''}
+        <button class="product-wishlist" onclick="toggleWishlist(this)"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+        <img src="${imgPath(p.img)}" alt="${p.name}">
       </div>
       <div class="product-info">
         <h4>${p.name}</h4>
         <div class="product-meta">${p.desc}</div>
-        <div class="product-stars">
-          ${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5 - Math.floor(p.rating))}
-          <span>${p.rating} (${p.reviews} reviews)</span>
-        </div>
+        <div class="product-stars">${'&#9733;'.repeat(Math.floor(p.rating))}${'&#9734;'.repeat(5 - Math.floor(p.rating))} <span class="rc">${p.rating} (${p.reviews} reviews)</span></div>
         <div class="product-footer">
           <div class="product-price">$${p.price}</div>
           <button class="product-add" onclick="addToCart(${p.id})" title="Add to Cart">+</button>
         </div>
       </div>
-    </div>
-  `).join('');
-
-    // Animate cards in
+    </div>`).join('');
     setTimeout(() => {
         $$('.product-card[data-aos]').forEach((card, i) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = `opacity 0.4s ease ${i * 0.07}s, transform 0.4s ease ${i * 0.07}s`;
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, 50);
+            card.style.opacity = '0'; card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.4s ease ' + (i * 0.07) + 's, transform 0.4s ease ' + (i * 0.07) + 's';
+            setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 50);
         });
     }, 10);
 }
@@ -217,10 +175,9 @@ function initFilters() {
 }
 
 function toggleWishlist(el) {
-    el.textContent = el.textContent === '🤍' ? '❤️' : '🤍';
+    el.classList.toggle('liked');
 }
 
-// === Mobile Nav ===
 function initMobileNav() {
     const hamburger = $('.hamburger');
     const mobileNav = $('.mobile-nav');
@@ -231,7 +188,6 @@ function initMobileNav() {
     $$('.mobile-nav a').forEach(a => a.addEventListener('click', () => mobileNav.classList.remove('open')));
 }
 
-// === Scroll Top ===
 function initScrollTop() {
     const btn = $('.scroll-top');
     if (!btn) return;
@@ -242,117 +198,30 @@ function initScrollTop() {
     btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
-// === Scroll Animations ===
 function initScrollAnimations() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
+            if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; }
         });
     }, { threshold: 0.1 });
-
-    $$('.feature-card, .how-step, .testimonial-card, .spec-card').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(24px)';
+    $$('.feature-card, .how-step, .testimonial-card, .detail-list-item, .about-stat-card, .swot-card').forEach(el => {
+        el.style.opacity = '0'; el.style.transform = 'translateY(24px)';
         el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
         observer.observe(el);
     });
 }
 
-// === Smooth active nav link ===
-function initActiveNav() {
-    const sections = $$('section[id]');
-    const navLinks = $$('.nav-links a');
-    window.addEventListener('scroll', () => {
-        let current = '';
-        sections.forEach(sec => {
-            if (window.scrollY >= sec.offsetTop - 100) current = sec.id;
-        });
-        navLinks.forEach(a => {
-            a.classList.remove('active');
-            if (a.getAttribute('href') === `#${current}`) a.classList.add('active');
-        });
-    });
-}
-
-// === Counter animation ===
-function animateCounters() {
-    const counters = $$('.stat-number');
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-            const el = entry.target;
-            const text = el.dataset.target || el.textContent;
-            const num = parseFloat(text.replace(/[^0-9.]/g, ''));
-            const suffix = text.replace(/[0-9.]/g, '');
-            const duration = 1500;
-            const start = Date.now();
-            const tick = () => {
-                const elapsed = Date.now() - start;
-                const progress = Math.min(elapsed / duration, 1);
-                const ease = 1 - Math.pow(1 - progress, 3);
-                el.textContent = (num * ease).toFixed(num % 1 !== 0 ? 1 : 0) + suffix;
-                if (progress < 1) requestAnimationFrame(tick);
-            };
-            tick();
-            observer.unobserve(el);
-        });
-    }, { threshold: 0.5 });
-    counters.forEach(el => {
-        el.dataset.target = el.textContent;
-        observer.observe(el);
-    });
-}
-
-// === Hero product selector ===
-function initHeroSelector() {
-    const selector = $('.hero-product-selector');
-    if (!selector) return;
-    $$('.hero-product-option').forEach(opt => {
-        opt.addEventListener('click', () => {
-            $$('.hero-product-option').forEach(o => o.classList.remove('active'));
-            opt.classList.add('active');
-            const id = parseInt(opt.dataset.id);
-            const product = products.find(p => p.id === id);
-            if (!product) return;
-            const emoji = $('.hero-product-emoji');
-            const name = $('.hero-product-name');
-            const price = $('.hero-product-price');
-            const addBtn = $('.hero-add-btn');
-            if (emoji) { emoji.style.opacity = '0'; setTimeout(() => { emoji.textContent = product.emoji; emoji.style.opacity = '1'; }, 200); }
-            if (name) name.textContent = product.name;
-            if (price) price.textContent = `$${product.price}`;
-            if (addBtn) addBtn.onclick = () => addToCart(product.id);
-        });
-    });
-}
-
-// === Trust ticker ===
 function initTrustTicker() {
     const track = $('.trust-scroll');
     if (!track) return;
-    // Clone for seamless loop
     track.innerHTML += track.innerHTML;
 }
 
-// === INIT ===
 document.addEventListener('DOMContentLoaded', () => {
-    initNavbar();
-    initCart();
-    renderProducts();
-    initFilters();
-    initMobileNav();
-    initScrollTop();
-    initScrollAnimations();
-    initActiveNav();
-    animateCounters();
-    initHeroSelector();
-    initTrustTicker();
+    initNavbar(); initCart(); renderProducts(); initFilters();
+    initMobileNav(); initScrollTop(); initScrollAnimations(); initTrustTicker();
 });
 
-// Expose globals for inline onclick
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.changeQty = changeQty;
