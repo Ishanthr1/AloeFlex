@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AloeFlex — 3D Product Viewer</title>
+    <link rel="stylesheet" href="../css/viewer.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="../index.html" class="nav-logo">
+            <span class="nav-logo-text">Aloe<span>Flex</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="../index.html#features">Features</a></li>
+            <li><a href="../index.html#products">Shop</a></li>
+            <li><a href="../index.html#technology">AloeTrack</a></li>
+            <li><a href="viewer.html" class="active">3D View</a></li>
+            <li><a href="../index.html#about">About</a></li>
+        </ul>
+        <a href="../index.html#products" class="nav-cta">Shop Now</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="viewer-hero">
+    <div class="viewer-label">Interactive 3D Model</div>
+    <h1>AloeFlex <em>Knee Brace</em></h1>
+    <p class="viewer-subtitle">Drag to rotate · Scroll to zoom · Explore every layer of protection</p>
+
+    <!-- Canvas -->
+    <div class="viewer-canvas-wrap">
+        <div class="placeholder-badge">🔬 3D Placeholder</div>
+        <canvas id="three-canvas"></canvas>
+        <div class="canvas-ring"></div>
+        <div class="canvas-corner tl"></div>
+        <div class="canvas-corner tr"></div>
+        <div class="canvas-corner bl"></div>
+        <div class="canvas-corner br"></div>
+        <div class="canvas-loading" id="canvas-loading">
+            <div class="loader-ring"></div>
+            <p>Loading 3D model...</p>
+        </div>
+    </div>
+    <p class="canvas-hint">🖱️ Drag to rotate &nbsp;·&nbsp; 🖱️ Scroll to zoom &nbsp;·&nbsp; Double-click to reset</p>
+
+    <!-- Controls -->
+    <div class="viewer-controls">
+        <button class="ctrl-btn active" id="btn-autorotate">⏸ Pause Rotation</button>
+        <div class="ctrl-divider"></div>
+        <button class="ctrl-btn" id="btn-explode">💥 Explode View</button>
+        <div class="ctrl-divider"></div>
+        <button class="ctrl-btn" id="btn-reset">↩ Reset View</button>
+    </div>
+</div>
+
+<!-- SPECS -->
+<div class="specs-section">
+    <h2>Technical Specifications</h2>
+    <div class="specs-grid">
+        <div class="spec-card">
+            <div class="spec-icon">🛡️</div>
+            <h4>Shell Material</h4>
+            <h3>Low Density Polyethylene</h3>
+            <p>LDPE provides 7,830 PSI tensile strength — far exceeding any force an athlete would experience in play. Flexible yet highly resistant to blunt impact.</p>
+        </div>
+        <div class="spec-card">
+            <div class="spec-icon">🌿</div>
+            <h4>Interior Fabric</h4>
+            <h3>Aloe Vera Microencapsulation</h3>
+            <p>Aloe vera capsules release continuously during wear. Anti-inflammatory, antibacterial, anti-allergenic, and naturally temperature regulating — no ice packs needed.</p>
+        </div>
+        <div class="spec-card">
+            <div class="spec-icon">🤸</div>
+            <h4>Core Material</h4>
+            <h3>Neoprene + Memory Foam</h3>
+            <p>Medical-grade neoprene and memory foam contour precisely to the knee joint. Elastic cotton outer layer adds breathability and four-way stretch.</p>
+        </div>
+        <div class="spec-card">
+            <div class="spec-icon">🔊</div>
+            <h4>Sensors</h4>
+            <h3>Contact Microphones</h3>
+            <p>Embedded contact microphones detect micro-vibrations on the skin surface, enabling real-time joint health assessment and arthritis severity classification.</p>
+        </div>
+        <div class="spec-card">
+            <div class="spec-icon">⚡</div>
+            <h4>Sensors</h4>
+            <h3>EBI Sensors</h3>
+            <p>Electrical Bioimpedance sensors quantitatively measure joint swelling and inflammation. Clinical-grade accuracy in a noninvasive wearable form factor.</p>
+        </div>
+        <div class="spec-card">
+            <div class="spec-icon">🔧</div>
+            <h4>Fit System</h4>
+            <h3>Dual Stability Straps</h3>
+            <p>Dual adjustable straps provide loosening and tightening control across the full range of joint sizes. One brace that truly fits everyone.</p>
+        </div>
+    </div>
+</div>
+
+<!-- CTA -->
+<div class="viewer-cta">
+    <h2 style="font-family:'Syne',sans-serif;color:white;margin-bottom:0.75rem;font-size:2rem;">Ready to protect your joints?</h2>
+    <p>The AloeFlex Knee Brace ships with the AloeTrack app — free, forever.</p>
+    <a href="../index.html#products" class="btn-cyan">🛒 Shop AloeFlex — From $34.99</a>
+</div>
+
+<!-- MINI FOOTER -->
+<div class="mini-footer">
+    © 2026 AloeFlex · <a href="../index.html" style="color:rgba(255,255,255,0.4)">Back to Store</a>
+</div>
+
+<!-- Three.js from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../js/viewer.js"></script>
+</body>
+</html>
